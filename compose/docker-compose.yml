@@ -1,12 +1,11 @@
 version: "3.3"
 
 services:
-
   conn-m:
     container_name: ocm-connection-manager
     build:
       context: ../apps/connection-manager
-      dockerfile: deployment/dev/Dockerfile
+      dockerfile: deployment/ci/Dockerfile
     ports:
       - "3003:3003"
     env_file:
@@ -20,7 +19,7 @@ services:
     container_name: ocm-attestation-manager
     build:
       context: ../apps/attestation-manager
-      dockerfile: deployment/dev/Dockerfile
+      dockerfile: deployment/ci/Dockerfile
     ports:
       - "3005:3005"
     env_file:
@@ -44,11 +43,25 @@ services:
       - nats
       - ssi
 
+  principal-m:
+    container_name: ocm-principal-manager
+    build:
+      context: ../apps/principal-manager
+      dockerfile: deployment/ci/Dockerfile
+    ports:
+      - "3008:3008"
+    env_file:
+      ./env/principal-manager.env
+    depends_on:
+      - db
+      - nats
+      - ssi
+
   ssi:
     container_name: ocm-ssi-abstraction
     build:
       context: ../apps/ssi-abstraction
-      dockerfile: deployment/dev/Dockerfile
+      dockerfile: deployment/ci/Dockerfile
     ports:
       - "3009:3009"
       - "3010:3010"
@@ -76,6 +89,7 @@ services:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=password
       - POSTGRES_DB=postgres
+      - POSTGRES_HOST_AUTH_METHOD=trust
 
   nats:
     container_name: nats

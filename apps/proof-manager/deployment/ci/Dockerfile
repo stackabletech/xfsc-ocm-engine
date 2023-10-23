@@ -1,44 +1,38 @@
-FROM node:16-alpine3.15 AS builder
+FROM node:16-slim AS builder
 
-WORKDIR /usr/src/app
+RUN apt-get update
+RUN apt-get install -y openssl 
+WORKDIR /app
 
-RUN yarn global add @nestjs/cli
-
-COPY package.json ./
-COPY yarn.lock ./
-
-# --prod works if @types/node is in deps (not devDeps)
-RUN yarn
-#--frozen-lockfile --prod
+RUN npm i -g pnpm
 
 COPY . .
+RUN pnpm install
 
-RUN yarn prisma:generate
+RUN pnpm -F proof-manager prisma:generate
 
-RUN yarn build
+RUN pnpm -F proof-manager build
 
+FROM node:16-slim 
 
-FROM node:14-alpine3.15
+RUN apt-get update
+RUN apt-get install -y openssl
+
 
 ENV PATH /usr/src/app/node_modules/.bin:$PATH
 
 WORKDIR /usr/src/app
 
-
-COPY --from=builder /usr/src/app/dist ./dist
-COPY --from=builder /usr/src/app/start.sh ./start.sh
-COPY --from=builder /usr/src/app/node_modules ./node_modules
-COPY --from=builder /usr/src/app/src/prisma prisma
+COPY --from=builder /app/dist ./dist
+COPY --from=builder /app/start.sh ./start.sh
+COPY --from=builder /app/node_modules ./node_modules
+COPY --from=builder /app/src/prisma prisma
 
 EXPOSE 3007
 
 RUN chmod +x ./start.sh
 
 CMD ["./start.sh"]
-
-
-
-
 
 
 
