@@ -343,6 +343,175 @@ importers:
         specifier: ^4.3.5
         version: 4.9.5
 
+  apps/principal-manager:
+    dependencies:
+      '@elastic/ecs-winston-format':
+        specifier: ^1.3.1
+        version: 1.3.1
+      '@nestjs/axios':
+        specifier: ^0.0.8
+        version: 0.0.8(@nestjs/common@8.4.7)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/common':
+        specifier: ^8.0.0
+        version: 8.4.7(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/config':
+        specifier: ^1.1.6
+        version: 1.2.1(@nestjs/common@8.4.7)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/core':
+        specifier: ^8.0.0
+        version: 8.4.7(@nestjs/common@8.4.7)(@nestjs/microservices@8.4.7)(@nestjs/platform-express@8.4.7)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/mapped-types':
+        specifier: '*'
+        version: 2.0.2(@nestjs/common@8.4.7)(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.1.13)
+      '@nestjs/microservices':
+        specifier: ^8.2.6
+        version: 8.4.7(@nestjs/common@8.4.7)(@nestjs/core@8.4.7)(nats@2.17.0)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@nestjs/platform-express':
+        specifier: ^8.0.0
+        version: 8.4.7(@nestjs/common@8.4.7)(@nestjs/core@8.4.7)
+      '@nestjs/schedule':
+        specifier: ^1.0.2
+        version: 1.1.0(@nestjs/common@8.4.7)(@nestjs/core@8.4.7)(reflect-metadata@0.1.13)
+      '@nestjs/swagger':
+        specifier: ^5.2.0
+        version: 5.2.1(@nestjs/common@8.4.7)(@nestjs/core@8.4.7)(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.1.13)(swagger-ui-express@4.6.3)
+      '@nestjs/terminus':
+        specifier: ^8.0.4
+        version: 8.1.1(@nestjs/common@8.4.7)(@nestjs/core@8.4.7)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      '@prisma/client':
+        specifier: ^3.9.2
+        version: 3.15.2(prisma@3.15.2)
+      '@types/node':
+        specifier: ^16.0.0
+        version: 16.18.57
+      class-validator:
+        specifier: ^0.13.2
+        version: 0.13.2
+      express:
+        specifier: ^4.17.3
+        version: 4.18.2
+      joi:
+        specifier: ^17.6.0
+        version: 17.11.0
+      jsonwebtoken:
+        specifier: ^8.5.1
+        version: 8.5.1
+      jwks-rsa:
+        specifier: ^3.0.0
+        version: 3.1.0
+      liquibase:
+        specifier: ^4.4.0
+        version: 4.4.0
+      moment:
+        specifier: ^2.29.1
+        version: 2.29.4
+      nats:
+        specifier: ^2.6.0
+        version: 2.17.0
+      openid-client:
+        specifier: ^5.1.6
+        version: 5.6.1
+      pg:
+        specifier: ^8.7.3
+        version: 8.11.3
+      prisma:
+        specifier: ^3.9.2
+        version: 3.15.2
+      reflect-metadata:
+        specifier: ^0.1.13
+        version: 0.1.13
+      rimraf:
+        specifier: ^3.0.2
+        version: 3.0.2
+      rxjs:
+        specifier: ^7.2.0
+        version: 7.8.1
+      swagger-ui-express:
+        specifier: ^4.3.0
+        version: 4.6.3(express@4.18.2)
+      winston:
+        specifier: ^3.6.0
+        version: 3.10.0
+      winston-elasticsearch:
+        specifier: ^0.16.1
+        version: 0.16.1
+    devDependencies:
+      '@nestjs/cli':
+        specifier: ^8.0.0
+        version: 8.2.8
+      '@nestjs/schematics':
+        specifier: ^8.0.0
+        version: 8.0.11(typescript@4.9.5)
+      '@nestjs/testing':
+        specifier: ^8.0.0
+        version: 8.4.7(@nestjs/common@8.4.7)(@nestjs/core@8.4.7)(@nestjs/microservices@8.4.7)(@nestjs/platform-express@8.4.7)
+      '@types/express':
+        specifier: ^4.17.13
+        version: 4.17.18
+      '@types/jest':
+        specifier: 27.0.2
+        version: 27.0.2
+      '@types/supertest':
+        specifier: ^2.0.11
+        version: 2.0.14
+      '@typescript-eslint/eslint-plugin':
+        specifier: ^5.17.0
+        version: 5.62.0(@typescript-eslint/parser@5.62.0)(eslint@8.50.0)(typescript@4.9.5)
+      '@typescript-eslint/parser':
+        specifier: ^5.17.0
+        version: 5.62.0(eslint@8.50.0)(typescript@4.9.5)
+      dotenv-cli:
+        specifier: ^4.1.1
+        version: 4.1.1
+      eslint:
+        specifier: ^8.12.0
+        version: 8.50.0
+      eslint-config-airbnb-base:
+        specifier: ^15.0.0
+        version: 15.0.0(eslint-plugin-import@2.28.1)(eslint@8.50.0)
+      eslint-config-airbnb-typescript:
+        specifier: ^16.1.0
+        version: 16.2.0(@typescript-eslint/eslint-plugin@5.62.0)(@typescript-eslint/parser@5.62.0)(eslint-plugin-import@2.28.1)(eslint@8.50.0)
+      eslint-config-prettier:
+        specifier: ^8.3.0
+        version: 8.10.0(eslint@8.50.0)
+      eslint-plugin-import:
+        specifier: ^2.25.4
+        version: 2.28.1(@typescript-eslint/parser@5.62.0)(eslint@8.50.0)
+      eslint-plugin-prettier:
+        specifier: ^4.0.0
+        version: 4.2.1(eslint-config-prettier@8.10.0)(eslint@8.50.0)(prettier@2.8.8)
+      husky:
+        specifier: ^7.0.4
+        version: 7.0.4
+      jest:
+        specifier: ^27.2.5
+        version: 27.5.1(ts-node@10.9.1)
+      prettier:
+        specifier: ^2.3.2
+        version: 2.8.8
+      source-map-support:
+        specifier: ^0.5.20
+        version: 0.5.21
+      supertest:
+        specifier: ^6.1.3
+        version: 6.3.3
+      ts-jest:
+        specifier: ^27.0.3
+        version: 27.1.5(@babel/core@7.23.0)(@types/jest@27.0.2)(jest@27.5.1)(typescript@4.9.5)
+      ts-loader:
+        specifier: ^9.2.3
+        version: 9.4.4(typescript@4.9.5)(webpack@5.88.2)
+      ts-node:
+        specifier: ^10.0.0
+        version: 10.9.1(@types/node@16.18.57)(typescript@4.9.5)
+      tsconfig-paths:
+        specifier: ^3.10.1
+        version: 3.14.2
+      typescript:
+        specifier: ^4.3.5
+        version: 4.9.5
+
   apps/proof-manager:
     dependencies:
       '@elastic/ecs-winston-format':
@@ -1558,6 +1727,21 @@ packages:
     dependencies:
       '@nestjs/common': 8.4.7(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.1.13)(rxjs@7.8.1)
       axios: 0.25.0
+      reflect-metadata: 0.1.13
+      rxjs: 7.8.1
+    transitivePeerDependencies:
+      - debug
+    dev: false
+
+  /@nestjs/axios@0.0.8(@nestjs/common@8.4.7)(reflect-metadata@0.1.13)(rxjs@7.8.1):
+    resolution: {integrity: sha512-oJyfR9/h9tVk776il0829xyj3b2e81yTu6HjPraxynwNtMNGqZBHHmAQL24yMB3tVbBM0RvG3eUXH8+pRCGwlg==}
+    peerDependencies:
+      '@nestjs/common': ^7.0.0 || ^8.0.0
+      reflect-metadata: ^0.1.12
+      rxjs: ^6.0.0 || ^7.0.0
+    dependencies:
+      '@nestjs/common': 8.4.7(class-transformer@0.5.1)(class-validator@0.13.2)(reflect-metadata@0.1.13)(rxjs@7.8.1)
+      axios: 0.27.2
       reflect-metadata: 0.1.13
       rxjs: 7.8.1
     transitivePeerDependencies:
@@ -6143,6 +6327,7 @@ packages:
   /koa-router@7.4.0:
     resolution: {integrity: sha512-IWhaDXeAnfDBEpWS6hkGdZ1ablgr6Q6pGdXCyK38RbzuH4LkUOpPqPw+3f8l8aTDrQmBQ7xJc0bs2yV4dzcO+g==}
     engines: {node: '>= 4'}
+    deprecated: '**IMPORTANT 10x+ PERFORMANCE UPGRADE**: Please upgrade to v12.0.1+ as we have fixed an issue with debuglog causing 10x slower router benchmark performance, see https://github.com/koajs/router/pull/173'
     requiresBuild: true
     dependencies:
       debug: 3.2.7
@@ -6850,6 +7035,11 @@ packages:
     dev: false
     optional: true
 
+  /object-hash@2.2.0:
+    resolution: {integrity: sha512-gScRMn0bS5fH+IuwyIFgnh9zBdo4DV+6GhygmWM9HyNJSgS0hScp1f5vjtm7oIIOiT9trXrShAkLFSc2IqKNgw==}
+    engines: {node: '>= 6'}
+    dev: false
+
   /object-hash@3.0.0:
     resolution: {integrity: sha512-RSn9F68PjH9HqtltsSnqYC1XXoWe9Bju5+213R98cNGttag9q9yAOTzdbsqvIa7aNm5WffBZFpWYr2aWrklWAw==}
     engines: {node: '>= 6'}
@@ -6913,6 +7103,11 @@ packages:
       es-abstract: 1.22.2
     dev: true
 
+  /oidc-token-hash@5.0.3:
+    resolution: {integrity: sha512-IF4PcGgzAr6XXSff26Sk/+P4KZFJVuHAJZj3wgO3vX2bMdNVp/QXTP3P7CEm9V1IdG8lDLY3HhiqpsE/nOwpPw==}
+    engines: {node: ^10.13.0 || >=12.0.0}
+    dev: false
+
   /on-finished@2.4.1:
     resolution: {integrity: sha512-oVlzkg3ENAhCk2zdv7IJwd/QUD4z2RxRwpkcGY8psCVcCYZNq4wYnVWALHM+brtuJjePWiYF/ClmuDr8Ch5+kg==}
     engines: {node: '>= 0.8'}
@@ -6951,6 +7146,15 @@ packages:
     resolution: {integrity: sha512-TxhYBMoqx9frXyOgnRHufjQfPXomTIHYKhSKJ6jHfj13kS8OEIhvmE8CTuQyKtjjWttAjX5DPxM1vmalEpo8Qw==}
     dependencies:
       yaml: 1.10.2
+    dev: false
+
+  /openid-client@5.6.1:
+    resolution: {integrity: sha512-PtrWsY+dXg6y8mtMPyL/namZSYVz8pjXz3yJiBNZsEdCnu9miHLB4ELVC85WvneMKo2Rg62Ay7NkuCpM0bgiLQ==}
+    dependencies:
+      jose: 4.15.2
+      lru-cache: 6.0.0
+      object-hash: 2.2.0
+      oidc-token-hash: 5.0.3
     dev: false
 
   /optional-js@2.3.0:
