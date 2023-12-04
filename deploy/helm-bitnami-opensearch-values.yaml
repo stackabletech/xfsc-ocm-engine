@@ -8,17 +8,17 @@ volumePermissions:
     runAsUser: auto
 
 master:
-  heapSize: "128m"
+  heapSize: "256m"
   podSecurityContext:
     enabled: true
   containerSecurityContext:
     enabled: true
   resources:
     requests:
-      memory: "128Mi"
+      memory: "256Mi"
       cpu: "100m"
     limits:
-      memory: "256Mi"
+      memory: "1Gi"
       cpu: "400m"
 
 data:
@@ -32,10 +32,10 @@ data:
     enabled: true
   resources:
     requests:
-      memory: "128Mi"
+      memory: "512Mi"
       cpu: "100m"
     limits:
-      memory: "1152Mi" # 1Gi + 128Mi
+      memory: "1664Mi"
       cpu: "400m"
 
 security:
