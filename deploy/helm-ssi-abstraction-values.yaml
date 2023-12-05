@@ -92,7 +92,7 @@ service:
 ssiAbstraction:
   agent:
     name: ssi-abstraction-agent
-    host: gaiax.vereign.com
+    host: ssi.xfsc.stackable.tech
     protocol: http
     peerPort: 443
     urlPath: /ocm/didcomm
