@@ -9,6 +9,7 @@ metadata:
   labels:
     {{- include "app.labels" . | nindent 4 }}
 spec:
+  ingressClassName: {{ .Values.ingress.className }}
 {{- if .Values.ingress.tlsEnabled }}
   tls:
     - hosts:
@@ -20,7 +21,7 @@ spec:
       http:
         paths:
           - path: /{{ .Release.Namespace }}/{{ template "app.path" . }}(/|$)(.*)
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: {{ template "app.name" . }}
