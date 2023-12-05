@@ -32,6 +32,25 @@
     --atomic \
     --wait
 
+### Nginx ingress
+
+    helm upgrade --install \
+      ingress-nginx ingress-nginx \
+      --repo https://kubernetes.github.io/ingress-nginx \
+      --namespace ingress-nginx \
+      --create-namespace \
+      --version v4.8.0
+
+### Cert manager
+
+    helm upgrade --install \
+      cert-manager cert-manager \
+      --repo https://charts.jetstack.io \
+      --namespace cert-manager \
+      --create-namespace \
+      --set installCRDs=true \
+      --version v1.13.1
+
 ## Apps
 
 ### SSI abstraction
@@ -49,9 +68,9 @@ Build image:
 
 Install:
 
-    helm upgrade ocm-ssi-abstraction \
-    --install \
-    --namespace xfsc-ocm \
-    --create-namespace \
-    -f deploy/helm-ssi-abstraction-values.yaml \
-    apps/ssi-abstraction/deployment/helm
+helm upgrade --install \
+--namespace xfsc-ocm \
+--create-namespace \
+-f deploy/helm-ssi-abstraction-values.yaml \
+ssi-abstraction ./apps/ssi-abstraction/deployment/helm 
+

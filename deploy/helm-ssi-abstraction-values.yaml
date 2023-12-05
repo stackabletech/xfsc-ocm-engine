@@ -19,7 +19,9 @@ image:
   # -- Image pull policy
   pullPolicy: IfNotPresent
   # -- Image pull secret when internal image is used
-  pullSecrets: ""
+  pullSecrets:
+    enabled: false
+    secretName: deployment-key-light
 
 
 podAnnotations: {}
@@ -118,14 +120,16 @@ ssiAbstraction:
     url: opensearch
     port: 9200
     protocol: http
+
 ingress:
-  enabled: false
-#  annotations:
-#    cert-manager.io/cluster-issuer: letsencrypt-production-http
-#    kubernetes.io/ingress.class: nginx
-#    kubernetes.io/ingress.global-static-ip-name: dev-light-public
-#    nginx.ingress.kubernetes.io/rewrite-target: /$2
-#  tlsEnabled: true
-#  frontendDomain: gaiax.vereign.com
-#  frontendTlsSecretName: cert-manager-tls
-#  pathOverride: didcomm
+  enabled: true
+  className: nginx
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    kubernetes.io/ingress.class: nginx
+    #kubernetes.io/ingress.global-static-ip-name: dev-light-public
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  tlsEnabled: true
+  frontendDomain: ssi.xfsc.stackable.tech
+  frontendTlsSecretName: xfsc-ocm-ssi-tls
+  pathOverride: didcomm
