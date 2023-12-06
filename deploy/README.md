@@ -132,6 +132,13 @@ TODO: Doesn't have a helm chart.
 
 Error at build time: same as proof-manager
 
+    helm upgrade --install \
+    --namespace xfsc-ocm \
+    --create-namespace \
+    --atomic \
+    --wait \
+    connection-manager ./apps/connection-manager/deployment/helm 
+
 ### Attestation manager
 
     cd apps/attestation-manager

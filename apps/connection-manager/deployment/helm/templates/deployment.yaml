@@ -29,8 +29,10 @@ spec:
     spec:
       securityContext:
 {{- include "app.securitycontext" . | nindent 8 }}
+{{- if .Values.image.pullSecrets.enabled }}
       imagePullSecrets:
-        - name: {{ .Values.image.pullSecrets }}
+        - name: {{ .Values.image.pullSecrets.secretName }}
+{{- end }}
       containers:
       - name: {{ template "app.name" . }}
         image: "{{ .Values.image.repository }}/{{ .Values.image.name }}:{{ default .Chart.AppVersion .Values.image.tag }}"
@@ -56,6 +58,9 @@ spec:
             value: {{ .Values.connectionManager.database.db }}
           - name: AGENT_URL
             value: "{{ .Values.connectionManager.agent.protocol }}://{{ .Values.connectionManager.agent.host }}:{{ .Values.connectionManager.agent.port }}"
+          - name: CONNECTION_MANAGER_URL
+            value: "{{ .Values.service.protocol }}://{{ .Values.service.host }}:{{ .Values.service.port }}"
+
 
 {{- if .Values.extraVars }}
 {{ toYaml .Values.extraVars | indent 8 }}
