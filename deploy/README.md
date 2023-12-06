@@ -149,4 +149,10 @@ Error at build time: same as proof-manager
 
     docker push docker.stackable.tech/gaia-x/xfsc/attestation-manager:ff4c37c
 
+    helm upgrade --install \
+    --namespace xfsc-ocm \
+    --create-namespace \
+    --atomic \
+    --wait \
+    attestation-manager ./apps/attestation-manager/deployment/helm 
 
