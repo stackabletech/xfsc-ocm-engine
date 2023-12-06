@@ -1,6 +1,6 @@
 import { existsSync, mkdirSync } from 'fs';
 import { Logger } from 'winston';
-import ecsFormat = require('@elastic/ecs-winston-format');
+const { ecsFormat } = require('@elastic/ecs-winston-format');
 
 import winston = require('winston');
 // import { ElasticsearchTransport } from 'winston-elasticsearch';
