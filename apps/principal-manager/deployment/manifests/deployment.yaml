@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: principal-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: principal-manager
+  template:
+    metadata:
+      labels:
+        app: principal-manager  # labels for the service selector
+    spec:
+      containers:
+      - name: principal-manager
+        image: docker.stackable.tech/gaia-x/xfsc/principal-manager:ff4c37c
+        ports:
+        - containerPort: 3008
+        envFrom:
+        - configMapRef:
+            name: principal-manager-env

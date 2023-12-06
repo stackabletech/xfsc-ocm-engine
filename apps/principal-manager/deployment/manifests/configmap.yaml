@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: principal-manager-env
+data:
+  PORT: "3008"
+  DATABASE_URL: "postgresql://ocm:ocm@postgresql:5432/ocm?schema=principal"
+  ECSURL: "http://opensearch:9200/"
+  CONNECTION_MANAGER_URL: "http://connection-manager:3003"
+  ATTESTATION_MANAGER_URL: "http://3.111.77.38:3005"
+  NATS_URL: "nats://nats:4222"
+  USE_AUTH: "false"
+  OAUTH_CLIENT_ID: "clientid"
+  OAUTH_CLIENT_SECRET: "clientsecret"
+  OAUTH_TOKEN_URL: "https://tokenurl"
