@@ -118,6 +118,7 @@ Install:
     docker push docker.stackable.tech/gaia-x/xfsc/principal-manager:ff4c37c
 
 Error at build time: same as proof-manager
+TODO: Doesn't have a helm chart.
 
 ### Connection manager
 

@@ -72,6 +72,10 @@ spec:
             value: {{ .Values.ssiAbstraction.agent.wallet.key  | quote }}
           - name: AGENT_WALLET_ID
             value: {{ .Values.ssiAbstraction.agent.wallet.id  | quote }}
+{{- if .Values.ssiAbstraction.agent.idUnion.enabled }}
+          - name: AGENT_ID_UNION_KEY
+            value: {{ .Values.ssiAbstraction.agent.idUnion.key }}
+{{- end }}
 {{- if .Values.extraVars }}
 {{ toYaml .Values.extraVars | indent 8 }}
 {{- end }}
