@@ -117,8 +117,12 @@ Install:
 
     docker push docker.stackable.tech/gaia-x/xfsc/principal-manager:ff4c37c
 
-Error at build time: same as proof-manager
-TODO: Doesn't have a helm chart.
+    # The principal manager doesn't have a Helm Chart, so we can apply some manifests
+    cd deployment/manifests
+
+    kubectl apply --namespace xfsc-ocm -f configmap.yaml
+    kubectl apply --namespace xfsc-ocm -f deployment.yaml
+    kubectl apply --namespace xfsc-ocm -f service.yaml
 
 ### Connection manager
 
