@@ -1,40 +1,13 @@
-import { existsSync, mkdirSync } from 'fs';
-import { Logger } from 'winston';
-import ecsFormat from '@elastic/ecs-winston-format';
-// import { ElasticsearchTransport } from 'winston-elasticsearch';
-import winston = require('winston');
-import { LoggerConfig } from '@common/constants';
+import { ecsFormat } from '@elastic/ecs-winston-format';
+import { createLogger, transports, type Logger } from 'winston';
 
-if (!existsSync(LoggerConfig.lOG_DIR)) {
-  mkdirSync(LoggerConfig.lOG_DIR);
-}
-
-// const esTransportOpts = {
-//   clientOpts: { node: process.env.ECSURL },
-// };
-
-// const esTransportOpts = {
-//   clientOpts: { node: 'http://localhost:9200' },
-// };
-
-// const esTransport = new ElasticsearchTransport(esTransportOpts);
-
-// esTransport.on('error', (error: any) => {
-//   console.error('Error in logger caught', error);
-// });
-
-const logger: Logger = winston.createLogger({
+const logger: Logger = createLogger({
   format: ecsFormat({ convertReqRes: true }),
-  transports: [
-    new winston.transports.Console(),
-    new winston.transports.File({
-      filename: LoggerConfig.FILE_PATH,
-    }),
-    // esTransport,
-  ],
+  transports: [new transports.Console()],
 });
 
 logger.on('error', (error) => {
+  // eslint-disable-next-line no-console
   console.error('Error in logger caught', error);
 });
 

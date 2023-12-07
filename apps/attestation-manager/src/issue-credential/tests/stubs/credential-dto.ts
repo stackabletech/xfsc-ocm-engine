@@ -1,6 +1,7 @@
-import CredentialDto from '@issueCredential/entities/credential.entity';
-import credDefStub from '@src/credentialDef/tests/stubs/credDef.stub';
-import AttestationService from '@src/issue-credential/services/service';
+import type CredentialDto from '../../entities/credential.entity.js';
+
+import credDefStub from '../../../credentialDef/tests/stubs/credDef.stub.js';
+import AttestationService from '../../services/service.js';
 
 const credentialDto = (): CredentialDto => ({
   credentialId: 'credential-id',

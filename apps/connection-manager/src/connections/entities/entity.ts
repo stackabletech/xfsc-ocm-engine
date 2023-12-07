@@ -1,40 +1,41 @@
 import { IsString, IsNotEmpty, IsDate, IsBoolean } from 'class-validator';
-import InvitationDTO from './InvitationDto.entity';
+
+import InvitationDTO from './InvitationDto.entity.js';
 
 export default class ConnectionDto {
   @IsString()
-  id?: string;
+  public id?: string;
 
   @IsDate()
-  connectionDate?: Date;
+  public connectionDate?: Date;
 
   @IsDate()
-  createdDate?: Date;
+  public createdDate?: Date;
 
   @IsDate()
-  updatedDate?: Date;
+  public updatedDate?: Date;
 
   @IsString()
   @IsNotEmpty()
-  participantDid: string;
+  public participantDid: string;
 
   @IsString()
   @IsNotEmpty()
-  status: string;
+  public status: string;
 
   @IsString()
   @IsNotEmpty()
-  connectionId: string;
+  public connectionId: string;
 
   @IsString()
-  theirDid: string;
+  public theirDid: string;
 
   @IsString()
-  theirLabel: string;
+  public theirLabel: string;
 
   @IsBoolean()
-  isReceived: boolean;
+  public isReceived: boolean;
 
   @IsString()
-  invitation?: InvitationDTO;
+  public invitation?: InvitationDTO;
 }

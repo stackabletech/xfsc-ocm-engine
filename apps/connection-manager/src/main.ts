@@ -1,47 +1,46 @@
-import { HttpAdapterHost, NestFactory } from '@nestjs/core';
-import { ConfigService } from '@nestjs/config';
+import type { MicroserviceOptions } from '@nestjs/microservices';
+
 import { VersioningType } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { HttpAdapterHost, NestFactory } from '@nestjs/core';
+import { Transport } from '@nestjs/microservices';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
-import { Transport, MicroserviceOptions } from '@nestjs/microservices';
-import AllExceptionsFilter from '@utils/exceptionsFilter';
-import AppModule from './app.module';
-import logger from './utils/logger';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  const configService = app.get(ConfigService);
-  app.enableCors();
+import AppModule from './app.module.js';
+import AllExceptionsFilter from './utils/exceptionsFilter.js';
+import logger from './utils/logger.js';
 
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.NATS,
-    options: {
-      servers: [configService.get('nats').url],
-    },
-  });
+const app = await NestFactory.create(AppModule);
+const configService = app.get(ConfigService);
+app.enableCors();
 
-  app.enableVersioning({
-    defaultVersion: ['1', '2'],
-    type: VersioningType.URI,
-  });
+app.connectMicroservice<MicroserviceOptions>({
+  transport: Transport.NATS,
+  options: {
+    servers: [configService.get('nats').url],
+  },
+});
 
-  const swaggerConfig = new DocumentBuilder()
-    .setTitle('Gaia-x Connection Manager API')
-    .setDescription('API documentation for GAIA-X Connection Manager')
-    .setVersion('1.0')
-    .addServer(`localhost:${configService.get('PORT')}`)
-    .build();
+app.enableVersioning({
+  defaultVersion: ['1', '2'],
+  type: VersioningType.URI,
+});
 
-  const document = SwaggerModule.createDocument(app, swaggerConfig);
+const swaggerConfig = new DocumentBuilder()
+  .setTitle('Gaia-x Connection Manager API')
+  .setDescription('API documentation for GAIA-X Connection Manager')
+  .setVersion('1.0')
+  .addServer(`http://localhost:${configService.get('PORT')}`)
+  .build();
 
-  SwaggerModule.setup('/swagger', app, document);
-  await app.startAllMicroservices();
+const document = SwaggerModule.createDocument(app, swaggerConfig);
 
-  const httpAdapter = app.get(HttpAdapterHost);
-  app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+SwaggerModule.setup('/swagger', app, document);
+await app.startAllMicroservices();
 
-  await app.listen(configService.get('PORT') || 3000, () => {
-    logger.info(`Listening on Port:${configService.get('PORT')}` || 3000);
-  });
-}
+const httpAdapter = app.get(HttpAdapterHost);
+app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
 
-bootstrap();
+await app.listen(configService.get('PORT') || 3000, () => {
+  logger.info(`Listening on Port:${configService.get('PORT')}` || 3000);
+});

@@ -1,8 +1,10 @@
-import { HttpStatus } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
-import { ResponseType } from '@src/common/response';
+import type { ResponseType } from '../../common/response.js';
+import type { TestingModule } from '@nestjs/testing';
 
-import HealthController from '../health.controller';
+import { HttpStatus } from '@nestjs/common';
+import { Test } from '@nestjs/testing';
+
+import HealthController from '../health.controller.js';
 
 describe('HealthController', () => {
   let healthController: HealthController;
