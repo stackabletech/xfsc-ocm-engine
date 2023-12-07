@@ -1,26 +1,27 @@
-import logger from '@utils/logger';
 import {
   Controller,
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
 import { Cron, CronExpression } from '@nestjs/schedule';
-import PrismaService from '@DB/prisma.service';
-import ConnectionRepository from '@connections/repository/connection.repository';
-import ConnectionsService from '@connections/services/service';
-import ConfigClient from '@src/client/config.client';
+
+import ConfigClient from '../../client/config.client.js';
+import PrismaService from '../../prisma/prisma.service.js';
+import logger from '../../utils/logger.js';
+import ConnectionRepository from '../repository/connection.repository.js';
+import ConnectionsService from '../services/service.js';
 
 @Injectable()
 @Controller()
 export default class SchedulerService {
   private connectionRepository;
 
-  constructor(private readonly prismaService: PrismaService) {
+  public constructor(private readonly prismaService: PrismaService) {
     this.connectionRepository = new ConnectionRepository(this.prismaService);
   }
 
   @Cron(CronExpression.EVERY_30_SECONDS)
-  async expireNonCompleteConnection() {
+  public async expireNonCompleteConnection() {
     const compareDateTime = ConfigClient.getConnectionExpire();
     if (compareDateTime) {
       const checkExpireTillDateTime = ConfigClient.checkExpireTill();
@@ -56,9 +57,8 @@ export default class SchedulerService {
           isActive: false,
         },
       };
-      const result = await this.connectionRepository.updateManyConnection(
-        query,
-      );
+      const result =
+        await this.connectionRepository.updateManyConnection(query);
       logger.info(JSON.stringify(result));
     } else {
       throw new InternalServerErrorException(
@@ -68,7 +68,7 @@ export default class SchedulerService {
   }
 
   @Cron(CronExpression.EVERY_30_SECONDS)
-  async expireNonTrustedConnection() {
+  public async expireNonTrustedConnection() {
     const compareDateTime = ConfigClient.getConnectionExpire();
     if (compareDateTime) {
       const checkExpireTillDateTime = ConfigClient.checkExpireTill();
@@ -94,9 +94,8 @@ export default class SchedulerService {
           isActive: false,
         },
       };
-      const result = await this.connectionRepository.updateManyConnection(
-        query,
-      );
+      const result =
+        await this.connectionRepository.updateManyConnection(query);
       logger.info(JSON.stringify(result));
     } else {
       throw new InternalServerErrorException(

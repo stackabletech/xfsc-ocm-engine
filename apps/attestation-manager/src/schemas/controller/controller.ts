@@ -1,3 +1,7 @@
+import type { ResponseType } from '../../common/response.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import type { Response } from 'express';
+
 import {
   Body,
   Controller,
@@ -10,25 +14,25 @@ import {
   Res,
   Version,
 } from '@nestjs/common';
-import { Response } from 'express';
-import logger from '@utils/logger';
-import SchemasService from '@src/schemas/services/service';
-import { ResponseType } from '@src/common/response';
-import SchemaDto from '@src/schemas/entities/schema-entity';
 import {
-  ApiBody, ApiOperation,
+  ApiBody,
+  ApiOperation,
   ApiParam,
   ApiQuery,
   ApiResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { PrismaClientUnknownRequestError } from '@prisma/client/runtime';
-import { VersionRegex } from '@src/common/constants';
+import { Prisma } from '@prisma/client';
+
+import { VersionRegex } from '../../common/constants.js';
+import logger from '../../utils/logger.js';
+import SchemaDto from '../entities/schema-entity.js';
+import SchemasService from '../services/service.js';
 
 @ApiTags('Schemas')
 @Controller('schemas')
 export default class SchemasController {
-  constructor(private readonly schemasService: SchemasService) {}
+  public constructor(private readonly schemasService: SchemasService) {}
 
   @Version(['1'])
   @ApiQuery({ name: 'page', required: false })
@@ -36,7 +40,8 @@ export default class SchemasController {
   @Get('')
   @ApiOperation({
     summary: 'Fetch a list of schemas',
-    description: 'This call provides capabilities to search schemas (which have been created by this OCM) by using pagination. This call returns a list of schemas and overall count of records. Every record contains schemaId, name, attributes'
+    description:
+      'This call provides capabilities to search schemas (which have been created by this OCM) by using pagination. This call returns a list of schemas and overall count of records. Every record contains schemaId, name, attributes',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -135,7 +140,7 @@ export default class SchemasController {
       },
     },
   })
-  async findSchemas(
+  public async findSchemas(
     @Query() query: { pageSize: string; page: string },
     @Res() response: Response,
   ) {
@@ -163,9 +168,9 @@ export default class SchemasController {
         };
       }
       return response.send(res);
-    } catch (error: any) {
+    } catch (error: unknown) {
       throw new InternalServerErrorException(
-        `Internal Server Error: ${error?.message}`,
+        `Internal Server Error: ${Reflect.get(error || {}, 'message')}`,
       );
     }
   }
@@ -175,7 +180,9 @@ export default class SchemasController {
   @Get('/:id')
   @ApiOperation({
     summary: 'Fetch schema by id',
-    description: 'This call provides the capability to get schema data by providing schemaId. The schema data is the same which is returned from /v1/schemas endpoint and contains generic information about schema like schemaID, name, createdBy, createdDate, updatedBy, updatedDate, attribute' })
+    description:
+      'This call provides the capability to get schema data by providing schemaId. The schema data is the same which is returned from /v1/schemas endpoint and contains generic information about schema like schemaID, name, createdBy, createdDate, updatedBy, updatedDate, attribute',
+  })
   @ApiResponse({
     status: HttpStatus.OK,
     description: 'Schema fetched successfully',
@@ -253,7 +260,10 @@ export default class SchemasController {
       },
     },
   })
-  async findSchemasById(@Param('id') id: string, @Res() response: Response) {
+  public async findSchemasById(
+    @Param('id') id: string,
+    @Res() response: Response,
+  ) {
     let res: ResponseType;
     try {
       logger.info('Schema fetched successfully');
@@ -276,7 +286,7 @@ export default class SchemasController {
       }
       return response.send(res);
     } catch (error) {
-      if (error instanceof PrismaClientUnknownRequestError) {
+      if (error instanceof Prisma.PrismaClientUnknownRequestError) {
         throw new InternalServerErrorException(error.message);
       } else {
         throw new InternalServerErrorException(error);
@@ -289,7 +299,8 @@ export default class SchemasController {
   @Post('')
   @ApiOperation({
     summary: 'Create a new schema',
-    description: 'This call provides the capability to create new schema on ledger by name, author, version, schema attributes and type. Later this schema can be used to issue new credential definition. This call returns an information about created schema.'
+    description:
+      'This call provides the capability to create new schema on ledger by name, author, version, schema attributes and type. Later this schema can be used to issue new credential definition. This call returns an information about created schema.',
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -403,7 +414,7 @@ export default class SchemasController {
       },
     },
   })
-  async createSchema(
+  public async createSchema(
     @Body() createSchema: SchemaDto,
     @Res() response: Response,
   ) {
@@ -436,9 +447,8 @@ export default class SchemasController {
       const schemaResponse =
         await this.schemasService.checkSchemasByNameAndVersion(createSchema);
       if (schemaResponse[0] === 0) {
-        const resp = await this.schemasService.createSchemaOnLedger(
-          createSchema,
-        );
+        const resp =
+          await this.schemasService.createSchemaOnLedger(createSchema);
         if (resp?.id) {
           const schemaRes: SchemaDto = createSchema;
           schemaRes.schemaID = resp.id;
@@ -465,7 +475,7 @@ export default class SchemasController {
       }
       return response.send(res);
     } catch (error) {
-      if (error instanceof PrismaClientUnknownRequestError) {
+      if (error instanceof Prisma.PrismaClientUnknownRequestError) {
         throw new InternalServerErrorException(error.message);
       } else {
         throw new InternalServerErrorException(error);
@@ -477,7 +487,8 @@ export default class SchemasController {
   @Get('/get-dids-for-schema/:id')
   @ApiOperation({
     summary: 'Fetch list of dids for schema id',
-    description: 'This call provides the capability to get principal dids. The format of the response is shown in the example. To issue credentials, you need to have a credential definition. This is a basic principle of this process. This credential definition is created by using the schema. Using this endpoint gives you all dids of participants to whom OCM issued credentials using specified schema.'
+    description:
+      'This call provides the capability to get principal dids. The format of the response is shown in the example. To issue credentials, you need to have a credential definition. This is a basic principle of this process. This credential definition is created by using the schema. Using this endpoint gives you all dids of participants to whom OCM issued credentials using specified schema.',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -539,7 +550,10 @@ export default class SchemasController {
       },
     },
   })
-  async getDidsForSchema(@Param('id') id: string, @Res() response: Response) {
+  public async getDidsForSchema(
+    @Param('id') id: string,
+    @Res() response: Response,
+  ) {
     let res: ResponseType;
     try {
       logger.info('Schema DIDs fetched successfully');
@@ -571,7 +585,7 @@ export default class SchemasController {
       }
       return response.send(res);
     } catch (error) {
-      if (error instanceof PrismaClientUnknownRequestError) {
+      if (error instanceof Prisma.PrismaClientUnknownRequestError) {
         throw new InternalServerErrorException(error.message);
       } else {
         throw new InternalServerErrorException(error);

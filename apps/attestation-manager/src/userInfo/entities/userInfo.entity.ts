@@ -1,21 +1,21 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty, IsEnum } from 'class-validator';
+import { IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
 type UserInfo = {
-  [key: string]: any;
+  [key: string]: unknown;
 };
 export default class UserInfoDto {
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  connectionId: string;
+  public connectionId: string;
 
   @IsEnum(['always', 'contentApproved', 'never'])
   @IsNotEmpty()
   @ApiProperty()
-  autoAcceptCredential: string;
+  public autoAcceptCredential: string;
 
   @IsNotEmpty()
   @ApiProperty({ type: {} })
-  userInfo: UserInfo;
+  public userInfo: UserInfo;
 }

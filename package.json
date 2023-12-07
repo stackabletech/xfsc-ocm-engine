@@ -1,17 +1,35 @@
 {
   "name": "ocm-engine",
   "author": "Vereign AG",
-  "packageManager": "yarn@3.6.3",
   "private": true,
-  "workspaces": [
-    "apps/*"
-  ],
   "scripts": {
     "prisma:generate": "pnpm -r prisma:generate",
-    "attestation:build": "pnpm -F attestation-manager build",
+    "schema:build": "pnpm -F schema-manager build",
+    "credential:build": "pnpm -F credential-manager build",
     "connection:build": "pnpm -F connection-manager build",
     "principal:build": "pnpm -F principal-manager build",
     "proof:build": "pnpm -F proof-manager build",
-    "ssi:build": "pnpm -F ssi-abstraction build"
+    "ssi:build": "pnpm -F ssi-abstraction build",
+    "lint": "eslint --fix",
+    "lint:all": "pnpm lint -- .",
+    "format": "prettier --write",
+    "format:all": "pnpm format -- .",
+    "lint-staged": "lint-staged",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^18.4.2",
+    "@commitlint/config-conventional": "^18.4.2",
+    "@typescript-eslint/eslint-plugin": "^6.12.0",
+    "@typescript-eslint/parser": "^6.12.0",
+    "eslint": "^8.54.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-import-resolver-typescript": "^3.6.1",
+    "eslint-plugin-import": "^2.29.0",
+    "eslint-plugin-prettier": "^5.0.1",
+    "eslint-plugin-workspaces": "^0.10.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.1.0",
+    "prettier": "^3.1.0"
   }
 }

@@ -1,49 +1,51 @@
-import { IsString, IsNotEmpty } from 'class-validator';
-import InvitationDTO from './InvitationDto.entity';
+import { IsBooleanString, IsNotEmpty, IsString } from 'class-validator';
+
+import InvitationDTO from './InvitationDto.entity.js';
 
 export default class ConnectionStateDto {
   @IsString()
-  ['_tags']?: any;
+  public _tags?: string;
 
   @IsString()
-  metadata?: any;
+  public metadata?: string;
 
   @IsString()
-  didDoc?: any;
+  public didDoc?: string;
 
   @IsString()
-  verkey?: string;
+  public verkey?: string;
 
   @IsString()
-  createdAt?: string;
-
-  @IsString()
-  @IsNotEmpty()
-  role: string;
+  public createdAt?: string;
 
   @IsString()
   @IsNotEmpty()
-  state: string;
+  public role: string;
 
   @IsString()
   @IsNotEmpty()
-  id: string;
+  public state: string;
 
   @IsString()
   @IsNotEmpty()
-  did: string;
+  public id: string;
 
   @IsString()
-  theirDid: string;
+  @IsNotEmpty()
+  public did: string;
 
   @IsString()
-  theirLabel: string;
+  public theirDid: string;
 
   @IsString()
-  invitation: InvitationDTO;
+  public theirLabel: string;
 
   @IsString()
-  alias: string;
+  public invitation: InvitationDTO;
 
-  multiUseInvitation?: boolean;
+  @IsString()
+  public alias: string;
+
+  @IsBooleanString()
+  public multiUseInvitation?: boolean;
 }

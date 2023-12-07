@@ -1,7 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import AppModule from '@src/app.module';
+import type { INestApplication } from '@nestjs/common';
+import type { TestingModule } from '@nestjs/testing';
+
+import { afterEach, beforeEach, describe, it } from '@jest/globals';
+import { Test } from '@nestjs/testing';
+import request from 'supertest';
+
+import AppModule from '../src/app.module.js';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -15,6 +19,10 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () =>
-    request(app.getHttpServer()).get('/').expect(200).expect('Hello World!'));
+  afterEach(async () => {
+    await app.close();
+  });
+
+  it('/v1/health (GET)', () =>
+    request(app.getHttpServer()).get('/health').expect(200));
 });

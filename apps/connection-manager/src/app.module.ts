@@ -1,22 +1,19 @@
-import PrismaService from '@src/prisma/prisma.service';
-import { APP_FILTER } from '@nestjs/core';
-import {
-  MiddlewareConsumer,
-  Module,
-  NestModule,
-  RequestMethod,
-} from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { TerminusModule } from '@nestjs/terminus';
-import validationSchema from '@config/validation';
+import type { MiddlewareConsumer, NestModule } from '@nestjs/common';
 
-import config from '@config/config';
-import HealthController from '@health/health.controller';
-import ExceptionHandler from '@common/exception.handler';
-import ConnectionsModule from '@connections/module';
+import { Module, RequestMethod } from '@nestjs/common';
+import { ConfigModule } from '@nestjs/config';
+import { APP_FILTER } from '@nestjs/core';
 import { ScheduleModule } from '@nestjs/schedule';
-import SchedulerService from './connections/scheduler/scheduler.service';
-import { AuthMiddleware } from './middleware/auth.middleware';
+import { TerminusModule } from '@nestjs/terminus';
+
+import ExceptionHandler from './common/exception.handler.js';
+import config from './config/config.js';
+import validationSchema from './config/validation.js';
+import ConnectionsModule from './connections/module.js';
+import SchedulerService from './connections/scheduler/scheduler.service.js';
+import HealthController from './health/health.controller.js';
+import { AuthMiddleware } from './middleware/auth.middleware.js';
+import PrismaModule from './prisma/prisma.module.js';
 
 @Module({
   imports: [
@@ -27,6 +24,7 @@ import { AuthMiddleware } from './middleware/auth.middleware';
       load: [config],
       validationSchema,
     }),
+    PrismaModule,
     ConnectionsModule,
   ],
   controllers: [HealthController],
@@ -36,12 +34,11 @@ import { AuthMiddleware } from './middleware/auth.middleware';
       useClass: ExceptionHandler,
     },
     SchedulerService,
-    PrismaService,
   ],
 })
 export default class AppModule implements NestModule {
   // eslint-disable-next-line class-methods-use-this
-  configure(consumer: MiddlewareConsumer) {
+  public configure(consumer: MiddlewareConsumer) {
     // eslint-disable-line
     consumer
       .apply(AuthMiddleware)
