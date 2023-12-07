@@ -51,6 +51,11 @@
       --set installCRDs=true \
       --version v1.13.1
 
+## Ingress
+
+  kubectl create ns xfsc-ocm
+  kubectl apply -n xfsc-ocm -f deploy/ocm-ingress.yaml 
+
 ## Apps
 
 ### SSI abstraction
@@ -120,9 +125,9 @@ Install:
     # The principal manager doesn't have a Helm Chart, so we can apply some manifests
     cd deployment/manifests
 
-    kubectl apply --namespace xfsc-ocm -f configmap.yaml
-    kubectl apply --namespace xfsc-ocm -f deployment.yaml
-    kubectl apply --namespace xfsc-ocm -f service.yaml
+    kubectl apply --namespace xfsc-ocm -f ./apps/principal-manager/deployment/manifests/configmap.yaml
+    kubectl apply --namespace xfsc-ocm -f ./apps/principal-manager/deployment/manifests/deployment.yaml
+    kubectl apply --namespace xfsc-ocm -f ./apps/principal-manager/deployment/manifests/service.yaml
 
 ### Connection manager
 

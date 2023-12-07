@@ -114,7 +114,7 @@ attestationManager:
     connectionManager: https://gaiax.vereign.com/ocm/connection
     attestationManager: https://gaiax.vereign.com/ocm/attestation
 ingress:
-  enabled: true
+  enabled: false
   className: nginx
   annotations:
     kubernetes.io/ingress.class: nginx

@@ -111,7 +111,7 @@ connectionManager:
     port: 9200
     protocol: http
 ingress:
-  enabled: true
+  enabled: false
   className: nginx
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt

@@ -1,0 +1,60 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/rewrite-target: /$2
+  labels:
+    app.kubernetes.io/component: ocm
+    app.kubernetes.io/name: ocm
+  name: ocm
+  namespace: xfsc-ocm
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: xfsc.stackable.tech
+    http:
+      paths:
+      - backend:
+          service:
+            name: attestation-manager
+            port:
+              number: 3005
+        path: /attestation(/|$)(.*)
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: ssi-abstraction
+            port:
+              number: 443
+        path: /didcomm(/|$)(.*)
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: proof-manager
+            port:
+              number: 3007
+        path: /proof(/|$)(.*)
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: connection-manager
+            port:
+              number: 3003
+        path: /connection(/|$)(.*)
+        pathType: ImplementationSpecific
+      - backend:
+          service:
+            name: principal-manager
+            port:
+              number: 3008
+        path: /principal(/|$)(.*)
+        pathType: ImplementationSpecific
+
+
+  tls:
+  - hosts:
+    - xfsc.stackable.tech
+    secretName: xfsc-ocm-tls
