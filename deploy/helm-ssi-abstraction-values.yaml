@@ -92,10 +92,10 @@ service:
 ssiAbstraction:
   agent:
     name: ssi-abstraction-agent
-    host: ssi.xfsc.stackable.tech
+    host: ocm.xfsc.stackable.tech
     protocol: http
     peerPort: 443
-    urlPath: /ocm/didcomm
+    urlPath: /didcomm
     publicDidSeed: 6b8b882e2618fa5d45ee7229ca880083
     autoAccept:
       connection: true

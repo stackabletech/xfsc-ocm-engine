@@ -111,8 +111,8 @@ attestationManager:
     protocol: http
   url:
     tsa: https://gaiax.vereign.com/tsa/policy/policy/example
-    connectionManager: https://gaiax.vereign.com/ocm/connection
-    attestationManager: https://gaiax.vereign.com/ocm/attestation
+    connectionManager: https://ocm.xfsc.stackable.tech/connection
+    attestationManager: https://ocm.xfsc.stackable.tech/attestation
 ingress:
   enabled: false
   className: nginx

@@ -53,5 +53,5 @@ destroy() {
 	kubectl delete --namespace xfsc-ocm ingress/ocm
 }
 
-#create
-destroy
+create
+#destroy

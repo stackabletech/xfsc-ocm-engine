@@ -14,7 +14,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-  - host: xfsc.stackable.tech
+  - host: ocm.xfsc.stackable.tech
     http:
       paths:
       - backend:
