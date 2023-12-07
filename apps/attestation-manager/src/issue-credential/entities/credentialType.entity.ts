@@ -1,17 +1,17 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsString, IsNotEmpty } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 
 export default class CredentialTypeDto {
   @IsString()
-  id?: string;
+  public id?: string;
 
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  type: string;
+  public type: string;
 
   @IsString()
   @IsNotEmpty()
   @ApiProperty()
-  schemaId: string;
+  public schemaId: string;
 }

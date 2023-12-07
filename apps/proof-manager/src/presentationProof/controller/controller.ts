@@ -1,3 +1,10 @@
+import type ResponseType from '../../common/response.js';
+import type GetProofRequest from '../entities/get-proof-request.dto.js';
+import type MembershipCredentialDto from '../entities/membership-credential.dto.js';
+import type PresentationSubscriptionEndpointDto from '../entities/presentationSubscribeEndPoint.entity.js';
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
+import type { Response } from 'express';
+
 import {
   Body,
   Controller,
@@ -9,34 +16,36 @@ import {
   Res,
   Version,
 } from '@nestjs/common';
-import { Response } from 'express';
-import logger from '@utils/logger';
-import PresentationProofsService from '@presentationProof/services/service';
-import ResponseType from '@common/response';
-import {ApiBody, ApiOperation, ApiQuery, ApiResponse, ApiTags} from '@nestjs/swagger';
-import SendProofRequest from '@presentationProof/entities/send-proof-request.dto';
-import GetProofRequest from '@presentationProof/entities/get-proof-request.dto';
-import AcceptPresentationDto from '@presentationProof/entities/accept-presentation.dto';
-import FindProofPresentationDto from '@presentationProof/entities/find-proof-presentation.dto';
-import { EventPattern, MessagePattern } from '@nestjs/microservices';
 import { ConfigService } from '@nestjs/config';
-import PresentationSubscriptionEndpointDto from '@presentationProof/entities/presentationSubscribeEndPoint.entity';
-import PrincipalCredentialDto from '@presentationProof/entities/membership-credential.dto';
+import { EventPattern, MessagePattern } from '@nestjs/microservices';
 import {
-  Abstraction,
+  ApiBody,
+  ApiOperation,
+  ApiQuery,
+  ApiResponse,
+  ApiTags,
+} from '@nestjs/swagger';
+import { Base64 } from 'js-base64';
+
+import {
   ATTESTATION,
+  Abstraction,
   NATSServices,
   States,
-} from '@src/common/constants';
-import GetPresentProofsDto from '@presentationProof/entities/get-present-proofs.dto';
-import AcceptProofRequestDto from '@presentationProof/entities/accept-proof-request.dto';
-import { Base64 } from 'js-base64';
-import SendProofRequestBody from '../entities/send-proof-request-body.dto';
+} from '../../common/constants.js';
+import logger from '../../utils/logger.js';
+import AcceptPresentationDto from '../entities/accept-presentation.dto.js';
+import AcceptProofRequestDto from '../entities/accept-proof-request.dto.js';
+import FindProofPresentationDto from '../entities/find-proof-presentation.dto.js';
+import GetPresentProofsDto from '../entities/get-present-proofs.dto.js';
+import SendProofRequestBody from '../entities/send-proof-request-body.dto.js';
+import SendProofRequest from '../entities/send-proof-request.dto.js';
+import PresentationProofsService from '../services/service.js';
 
 @ApiTags('Proofs')
 @Controller()
 export default class PresentationProofsController {
-  constructor(
+  public constructor(
     private readonly presentationProofsService: PresentationProofsService,
     private configService: ConfigService,
   ) {}
@@ -57,7 +66,8 @@ export default class PresentationProofsController {
   @Get('find-proof-presentation')
   @ApiOperation({
     summary: 'Fetch list of proof requests',
-    description: 'This call provides the capability to search proofs (Credential Presentation) by using pagination and filter parameters. This call returns a list of proof requests (Proof Presentations) and overall count of records. Filter supports following parameters: page, pageSize, proofRecordId, connectionId, credentialDefId, schemaId, theirDid, status, createdDateStart, createdDateEnd, updatedDateStart, updatedDateEnd'
+    description:
+      'This call provides the capability to search proofs (Credential Presentation) by using pagination and filter parameters. This call returns a list of proof requests (Proof Presentations) and overall count of records. Filter supports following parameters: page, pageSize, proofRecordId, connectionId, credentialDefId, schemaId, theirDid, status, createdDateStart, createdDateEnd, updatedDateStart, updatedDateEnd',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -109,7 +119,7 @@ export default class PresentationProofsController {
       },
     },
   })
-  async findProofPresentation(
+  public async findProofPresentation(
     @Query() query: FindProofPresentationDto,
     @Res() response: Response,
   ) {
@@ -154,7 +164,8 @@ export default class PresentationProofsController {
   @Get('find-by-presentation-id')
   @ApiOperation({
     summary: 'Fetch proof presentation by proofRequestId',
-    description: 'This call provides the capability to get proof request by providing proofRecordId (presentationId). The call returns an information about proof request and also (if user accepted proof request) information about requested user credentials'
+    description:
+      'This call provides the capability to get proof request by providing proofRecordId (presentationId). The call returns an information about proof request and also (if user accepted proof request) information about requested user credentials',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -222,7 +233,7 @@ export default class PresentationProofsController {
       },
     },
   })
-  async findProofByProofRecordId(
+  public async findProofByProofRecordId(
     @Query() query: AcceptPresentationDto,
     @Res() response: Response,
   ) {
@@ -277,7 +288,7 @@ export default class PresentationProofsController {
             data.requested_proof.revealed_attr_groups[revealedAttrGroupsKey]
               .sub_proof_index;
 
-          const presentationData: any = {
+          const presentationData: (typeof resData)['presentations'][number] = {
             schemaId: data.identifiers[subIndex].schema_id,
             credDefId: data.identifiers[subIndex].cred_def_id,
             revRegId: data.identifiers[subIndex].rev_reg_id,
@@ -339,7 +350,7 @@ export default class PresentationProofsController {
   @MessagePattern({
     endpoint: `${NATSServices.SERVICE_NAME}/sendMembershipProofRequest`,
   })
-  async sendPrincipalCredentialPresentationRequest(data: {
+  public async sendPrincipalCredentialPresentationRequest(data: {
     connectionId: string;
   }) {
     let res: ResponseType;
@@ -366,7 +377,7 @@ export default class PresentationProofsController {
         },
       );
 
-      const sendProofRes: PrincipalCredentialDto = {
+      const sendProofRes: MembershipCredentialDto = {
         connectionId: data.connectionId,
         attributes,
       };
@@ -404,7 +415,9 @@ export default class PresentationProofsController {
   @EventPattern({
     endpoint: `${Abstraction.NATS_ENDPOINT}/${Abstraction.PROOF_STATE_CHANGED}`,
   })
-  async webhookGetProofPresentation(body: { proofRecord: GetProofRequest }) {
+  public async webhookGetProofPresentation(body: {
+    proofRecord: GetProofRequest;
+  }) {
     const getProofRequest = body.proofRecord;
     let res: ResponseType;
     let getProofRequestDTO: GetProofRequest;
@@ -467,7 +480,8 @@ export default class PresentationProofsController {
   @Post('send-presentation-request')
   @ApiOperation({
     summary: 'Send presentation request',
-    description: 'This call provides the capability to create a new presentation request bound to existing connection. It is mandatory to provide a schema for every requested attribute and attribute name in the body information of the connection. The call returns an information about proof request (proofRecordId, connectionId, credentialDefId, schemaId, theirDid, status, createdDate, updatedDate, threadId)'
+    description:
+      'This call provides the capability to create a new presentation request bound to existing connection. It is mandatory to provide a schema for every requested attribute and attribute name in the body information of the connection. The call returns an information about proof request (proofRecordId, connectionId, credentialDefId, schemaId, theirDid, status, createdDate, updatedDate, threadId)',
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -537,7 +551,7 @@ export default class PresentationProofsController {
       },
     },
   })
-  async sendPresentationRequest(
+  public async sendPresentationRequest(
     @Body() sendProofRequest: SendProofRequest,
     @Res() response: Response,
   ) {
@@ -561,9 +575,10 @@ export default class PresentationProofsController {
       };
       return response.status(HttpStatus.BAD_REQUEST).send(res);
     }
-    const resp = await this.presentationProofsService.sendPresentationRequest(
-      sendProofRequest,
-    );
+    const resp =
+      await this.presentationProofsService.sendPresentationRequest(
+        sendProofRequest,
+      );
     logger.info(`sendPresentationRequest response ${JSON.stringify(resp)}`);
     if (resp?.id) {
       const sendProofRes: SendProofRequest = sendProofRequest;
@@ -603,7 +618,8 @@ export default class PresentationProofsController {
   @Post('send-out-of-band-presentation-request')
   @ApiOperation({
     summary: 'Send out of band presentation request',
-    description: 'This call provides the capability to create a new presentation request not bound to any proposal or existing connection. The call returns an information about presentation request'
+    description:
+      'This call provides the capability to create a new presentation request not bound to any proposal or existing connection. The call returns an information about presentation request',
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -673,7 +689,7 @@ export default class PresentationProofsController {
       },
     },
   })
-  async sendOutOfBandPresentationRequest(
+  public async sendOutOfBandPresentationRequest(
     @Body() sendProofRequestBody: SendProofRequestBody,
     @Res() response: Response,
   ) {
@@ -778,7 +794,8 @@ export default class PresentationProofsController {
   @Post('out-of-band-proof')
   @ApiOperation({
     summary: 'Send out of band proof',
-    description: 'This call provides the capability to create a new presentation request not bound to any proposal or existing connection but it creates just on type defined in attestation manager (type is bound to schema id there). The call returns an information about presentation request'
+    description:
+      'This call provides the capability to create a new presentation request not bound to any proposal or existing connection but it creates just on type defined in attestation manager (type is bound to schema id there). The call returns an information about presentation request',
   })
   @ApiResponse({
     status: HttpStatus.CREATED,
@@ -828,7 +845,7 @@ export default class PresentationProofsController {
       },
     },
   })
-  async outOfBandProof(
+  public async outOfBandProof(
     @Query() query: { type: string },
     @Res() response: Response,
   ) {
@@ -910,7 +927,8 @@ export default class PresentationProofsController {
   @Post('accept-presentation/:proofRecordId')
   @ApiOperation({
     summary: 'Accept presentation request by proofRecordId',
-    description: 'Accept a presentation as prover (by sending a presentation acknowledgement message) to the connection associated with the proof record.'
+    description:
+      'Accept a presentation as prover (by sending a presentation acknowledgement message) to the connection associated with the proof record.',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -964,7 +982,7 @@ export default class PresentationProofsController {
       },
     },
   })
-  async acceptPresentation(
+  public async acceptPresentation(
     @Param() params: AcceptPresentationDto,
     @Res() response: Response,
   ) {
@@ -992,7 +1010,8 @@ export default class PresentationProofsController {
   @Post('accept-proof-request/:proofRecordId')
   @ApiOperation({
     summary: 'Accept proof request by proofRecordId',
-    description: 'Accept a presentation request as prover (by sending a presentation message) to the connection associated with the proof record.'
+    description:
+      'Accept a presentation request as prover (by sending a presentation message) to the connection associated with the proof record.',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -1094,7 +1113,7 @@ export default class PresentationProofsController {
       },
     },
   })
-  async acceptProofRequest(
+  public async acceptProofRequest(
     @Param() params: AcceptProofRequestDto,
     @Res() response: Response,
   ) {
@@ -1122,7 +1141,7 @@ export default class PresentationProofsController {
   @Post('delete-proof-request/:proofRecordId')
   @ApiOperation({
     summary: 'Delete proof request by proofRecordId',
-    description: 'Deletes a proofRecord in the proof repository.'
+    description: 'Deletes a proofRecord in the proof repository.',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -1181,7 +1200,7 @@ export default class PresentationProofsController {
       },
     },
   })
-  async deleteProofRequest(
+  public async deleteProofRequest(
     @Param() params: AcceptProofRequestDto,
     @Res() response: Response,
   ) {
@@ -1209,7 +1228,8 @@ export default class PresentationProofsController {
   @Post('decline-proof-request/:proofRecordId')
   @ApiOperation({
     summary: 'Decline proof request by proofRecordId',
-    description: 'Decline proof request as prover (by sending a presentation message) to the connection associated with the proof record.'
+    description:
+      'Decline proof request as prover (by sending a presentation message) to the connection associated with the proof record.',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -1311,7 +1331,7 @@ export default class PresentationProofsController {
       },
     },
   })
-  async declineProofRequest(
+  public async declineProofRequest(
     @Param() params: AcceptProofRequestDto,
     @Res() response: Response,
   ) {
@@ -1336,7 +1356,8 @@ export default class PresentationProofsController {
   @Get('agent-proofs')
   @ApiOperation({
     summary: 'Fetch all proofs directly from the agent',
-    description: 'This call provides the capability to get all proof records directly from agent. Pagination and sorting does not implemented in that version of Aries Framework Javascript'
+    description:
+      'This call provides the capability to get all proof records directly from agent. Pagination and sorting does not implemented in that version of Aries Framework Javascript',
   })
   @ApiResponse({
     status: HttpStatus.OK,
@@ -1431,7 +1452,7 @@ export default class PresentationProofsController {
       },
     },
   })
-  async getAllProofRequest(
+  public async getAllProofRequest(
     @Query() query: { threadId: string },
     @Res() response: Response,
   ) {
@@ -1448,7 +1469,7 @@ export default class PresentationProofsController {
   @MessagePattern({
     endpoint: `${NATSServices.SERVICE_NAME}/getPresentProofs`,
   })
-  async getPresentProofs(data: GetPresentProofsDto) {
+  public async getPresentProofs(data: GetPresentProofsDto) {
     return this.presentationProofsService.getPresentProofs(data);
   }
 
@@ -1456,9 +1477,9 @@ export default class PresentationProofsController {
   @Get('url/:id')
   @ApiOperation({
     summary: 'Get full url from short url id',
-    description: 'Get full url from short url id'
+    description: 'Get full url from short url id',
   })
-  async redirectToOriginalUrl(
+  public async redirectToOriginalUrl(
     @Param('id') id: string,
     @Res() response: Response,
   ) {

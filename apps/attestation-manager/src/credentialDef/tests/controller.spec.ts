@@ -1,13 +1,16 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import httpMocks from 'node-mocks-http';
+import type { TestingModule } from '@nestjs/testing';
+import type { Response } from 'express';
 
-import CredentialDefController from '@credentialDef/controller/controller';
-import CredentialDefService from '@credentialDef/services/service';
-import CredentialDefServiceMock from '@credentialDef/tests/__mocks__/service';
-import credDefStub from '@credentialDef/tests/stubs/credDef.stub';
 import { HttpStatus } from '@nestjs/common';
-import { Response } from 'express';
 import { ConfigService } from '@nestjs/config';
+import { Test } from '@nestjs/testing';
+import { createResponse } from 'node-mocks-http';
+
+import CredentialDefController from '../controller/controller.js';
+import CredentialDefService from '../services/service.js';
+
+import CredentialDefServiceMock from './__mocks__/service.js';
+import credDefStub from './stubs/credDef.stub.js';
 
 describe('CredentialDefController', () => {
   let credentialDefController: CredentialDefController;
@@ -42,7 +45,7 @@ describe('CredentialDefController', () => {
       page: string;
       schemaID: string;
     };
-    let credDefResponse: Response<string, Record<string, any>>;
+    let credDefResponse: Response<string, Record<string, unknown>>;
 
     beforeEach(async () => {
       query = {
@@ -51,7 +54,7 @@ describe('CredentialDefController', () => {
         schemaID: credDefStub().schemaID,
       };
 
-      const response = httpMocks.createResponse();
+      const response = createResponse();
       credDefResponse = await credentialDefController.findCredentialDef(
         query,
         response,
@@ -79,12 +82,12 @@ describe('CredentialDefController', () => {
 
   describe('findCredentialDefById()', () => {
     let credDefID: string;
-    let credDef: Response<string, Record<string, any>>;
+    let credDef: Response<string, Record<string, unknown>>;
 
     beforeEach(async () => {
       credDefID = credDefStub().id;
 
-      const response = httpMocks.createResponse();
+      const response = createResponse();
       credDef = await credentialDefController.findCredentialDefById(
         credDefID,
         response,
@@ -108,10 +111,10 @@ describe('CredentialDefController', () => {
   });
 
   describe('createCredDef()', () => {
-    let credDef: Response<string, Record<string, any>>;
+    let credDef: Response<string, Record<string, unknown>>;
 
     beforeEach(async () => {
-      const response = httpMocks.createResponse();
+      const response = createResponse();
       credDef = await credentialDefController.createCredentialDef(
         credDefStub(),
         response,
