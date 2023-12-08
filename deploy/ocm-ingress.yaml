@@ -52,9 +52,15 @@ spec:
               number: 3008
         path: /principal(/|$)(.*)
         pathType: ImplementationSpecific
-
+      - backend:
+          service:
+            name: webdid
+            port:
+              number: 8000
+        path: /.well-known
+        pathType: Prefix
 
   tls:
   - hosts:
-    - xfsc.stackable.tech
+    - ocm.xfsc.stackable.tech
     secretName: xfsc-ocm-tls

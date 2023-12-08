@@ -1,0 +1,95 @@
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: webdid
+  namespace: xfsc-ocm
+  labels:
+    app: webdid
+data:
+  did.json: |
+    {
+      "@context": [
+        "https://www.w3.org/ns/did/v1",
+        {
+          "Ed25519VerificationKey2018": "https://w3id.org/security#Ed25519VerificationKey2018",
+          "publicKeyJwk": {
+            "@id": "https://w3id.org/security#publicKeyJwk",
+            "@type": "@json"
+          }
+        }
+      ],
+      "id": "did:key:z6MkrHxJt5xs262TBj14qhb1fRvcazxTFcPQS6B8yBk8CEeX",
+      "verificationMethod": [
+        {
+          "id": "did:key:z6MkrHxJt5xs262TBj14qhb1fRvcazxTFcPQS6B8yBk8CEeX#z6MkrHxJt5xs262TBj14qhb1fRvcazxTFcPQS6B8yBk8CEeX",
+          "type": "Ed25519VerificationKey2018",
+          "controller": "did:key:z6MkrHxJt5xs262TBj14qhb1fRvcazxTFcPQS6B8yBk8CEeX",
+          "publicKeyJwk": {
+            "kty": "OKP",
+            "crv": "Ed25519",
+            "x": "r-n2FLDqmhhNwpgdqCgmr6EoKzlTggPGlgsfP_g_Mdw"
+          }
+        }
+      ],
+      "authentication": [
+        "did:key:z6MkrHxJt5xs262TBj14qhb1fRvcazxTFcPQS6B8yBk8CEeX#z6MkrHxJt5xs262TBj14qhb1fRvcazxTFcPQS6B8yBk8CEeX"
+      ],
+      "assertionMethod": [
+        "did:key:z6MkrHxJt5xs262TBj14qhb1fRvcazxTFcPQS6B8yBk8CEeX#z6MkrHxJt5xs262TBj14qhb1fRvcazxTFcPQS6B8yBk8CEeX"
+      ]
+    }
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webdid
+  namespace: xfsc-ocm
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webdid
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: webdid
+    spec:
+      volumes:
+      - name: webdid
+        configMap:
+          name: webdid
+          items:
+          - key: did.json
+            path: did.json
+      containers:
+      - name: webdid
+        command: ["python", "-m", "http.server", "-d", "/webdid"]
+        image: python:3.12.0-alpine3.18
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort: 8000
+          protocol: TCP
+        resources: {}
+        volumeMounts:
+        - mountPath: /webdid
+          name: webdid
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: webdid
+  name: webdid
+  namespace: xfsc-ocm
+spec:
+  type: ClusterIP
+  ports:
+  - name: http
+    port: 8000
+    protocol: TCP
+    targetPort: 8000
+  selector:
+    app: webdid
+
